@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Avis Clients</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <h2>Plateforme d'Analyse</h2>
+        <button onclick="logout()">Déconnexion</button>
+    </nav>
+
+    <div class="dashboard-container">
+        <section id="stats">
+            <h3>Statistiques Globales</h3>
+            <div id="statsContent">Chargement...</div> [cite: 77]
+        </section>
+
+        <section id="reviews">
+            <h3>Liste des Avis</h3>
+            <div id="reviewsList"></div> 
+        </section>
+    </div>
+
+    <script>
+        // Vérifier si l'utilisateur est connecté
+        const token = localStorage.getItem('auth_token');
+        if (!token) window.location.href = 'index.html';
+
+        async function fetchReviews() {
+            const response = await fetch('http://localhost:8000/api/reviews', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const reviews = await response.json();
+            // Logique pour afficher les avis ici 
+        }
+
+        function logout() {
+            localStorage.removeItem('auth_token');
+            window.location.href = 'index.html';
+        }
+
+        fetchReviews();
+    </script>
+</body>
+</html>

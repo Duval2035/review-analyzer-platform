@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyseur d'Avis - Connexion</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="login-container">
+        <h1>Connexion</h1>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email :</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe :</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit">Se connecter</button>
+        </form>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // Appel à votre API Laravel (assurez-vous que le serveur tourne)
+                const response = await fetch('http://localhost:8000/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Stockage du token pour les futures requêtes
+                    localStorage.setItem('auth_token', data.token);
+                    document.getElementById('message').innerText = "Connexion réussie !";
+                    // Redirection vers le dashboard
+                    window.location.href = 'dashboard.html';
+                } else {
+                    document.getElementById('message').innerText = "Erreur : " + data.message;
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                document.getElementById('message').innerText = "Impossible de contacter l'API.";
+            }
+        });
+    </script>
+</body>
+</html>

@@ -3,61 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analyseur d'Avis - Connexion</title>
+    <title>SentimentAI - Analyse d'Avis Clients</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="login-container">
-        <h1>Connexion</h1>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="email">Email :</label>
-                <input type="email" id="email" required>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Sentiment<span>AI</span></div>
+            <div class="nav-links">
+                <a href="login.html" class="btn-secondary">Connexion</a>
+                <a href="register.html" class="btn-primary">Essayer gratuitement</a>
             </div>
-            <div class="form-group">
-                <label for="password">Mot de passe :</label>
-                <input type="password" id="password" required>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Analysez vos avis clients grâce à l'<span>IA</span></h1>
+                <p>Transformez les commentaires de vos clients en données exploitables. Détectez automatiquement les sentiments, les scores et les thèmes abordés.</p>
+                <div class="hero-btns">
+                    <a href="register.html" class="btn-hero-primary">Démarrer maintenant</a>
+                    <a href="#features" class="btn-hero-secondary">En savoir plus</a>
+                </div>
             </div>
-            <button type="submit">Se connecter</button>
-        </form>
-        <p id="message"></p>
-    </div>
+            <div class="hero-image">
+                <div class="mockup">
+                    <div class="bar pos" style="height: 80%;"></div>
+                    <div class="bar neu" style="height: 40%;"></div>
+                    <div class="bar neg" style="height: 20%;"></div>
+                </div>
+            </div>
+        </section>
 
-    <script>
-        const loginForm = document.getElementById('loginForm');
-        
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+        <section id="features" class="features">
+            <div class="feature-card">
+                <h3>Analyse de Sentiment</h3>
+                <p>Déterminez instantanément si un avis est positif, neutre ou négatif[cite: 28].</p>
+            </div>
+            <div class="feature-card">
+                <h3>Thèmes Automatiques</h3>
+                <p>Identifiez les sujets comme la livraison, le prix ou la qualité[cite: 32].</p>
+            </div>
+            <div class="feature-card">
+                <h3>Statistiques Globales</h3>
+                <p>Visualisez la note moyenne et les tendances de satisfaction[cite: 77, 80].</p>
+            </div>
+        </section>
+    </main>
 
-            try {
-                // Appel à votre API Laravel (assurez-vous que le serveur tourne)
-                const response = await fetch('http://localhost:8000/api/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({ email, password })
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    // Stockage du token pour les futures requêtes
-                    localStorage.setItem('auth_token', data.token);
-                    document.getElementById('message').innerText = "Connexion réussie !";
-                    // Redirection vers le dashboard
-                    window.location.href = 'dashboard.html';
-                } else {
-                    document.getElementById('message').innerText = "Erreur : " + data.message;
-                }
-            } catch (error) {
-                console.error('Erreur:', error);
-                document.getElementById('message').innerText = "Impossible de contacter l'API.";
-            }
-        });
-    </script>
+    <footer>
+        <p>&copy; 2025 SentimentAI - Projet B3 Data & IA</p>
+    </footer>
 </body>
 </html>

@@ -1,22 +1,104 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --dark: #1e293b;
+    --light: #f8fafc;
+    --text-gray: #64748b;
+}
+
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-.login-container {
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 10%;
     background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    width: 300px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
-.form-group { margin-bottom: 1rem; }
-label { display: block; margin-bottom: 0.5rem; }
-input { width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; }
-button { width: 100%; padding: 0.7rem; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
-button:hover { background: #0056b3; }
-#message { color: red; margin-top: 1rem; font-size: 0.9rem; }
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--dark);
+}
+
+.logo span { color: var(--primary); }
+
+.nav-links a {
+    text-decoration: none;
+    margin-left: 1.5rem;
+    font-weight: 600;
+}
+
+/* Hero Section */
+.hero {
+    display: flex;
+    align-items: center;
+    padding: 5rem 10%;
+    gap: 4rem;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}
+
+.hero-content h1 span { color: var(--primary); }
+
+.hero-content p {
+    font-size: 1.2rem;
+    color: var(--text-gray);
+    margin-bottom: 2rem;
+    max-width: 500px;
+}
+
+/* Boutons */
+.btn-primary, .btn-hero-primary {
+    background: var(--primary);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.btn-primary:hover, .btn-hero-primary:hover { background: var(--primary-hover); }
+
+.btn-secondary, .btn-hero-secondary {
+    color: var(--dark);
+    padding: 0.8rem 1.5rem;
+}
+
+/* Feature Cards */
+.features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 5rem 10%;
+    background: white;
+}
+
+.feature-card {
+    padding: 2rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    transition: 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+}

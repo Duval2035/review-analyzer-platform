@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - SentimentAI</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="auth-page">
+    <div class="auth-card">                                                                                                             
+        <div class="logo">Sentiment<span>AI</span></div>
+        <h2>Bon retour !</h2>
+        <p class="auth-subtitle">Connectez-vous pour accéder à vos analyses.</p>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="nom@entreprise.com" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-primary">Se connecter</button>
+        </form>
+
+        <p class="auth-redirect">Pas encore de compte ? <a href="register.html">Inscrivez-vous ici</a></p>
+        <div id="message" class="error-msg"></div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('http://localhost:8000/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    localStorage.setItem('auth_token', data.token);
+                    localStorage.setItem('user_role', data.user.role); // Stocker le rôle [cite: 52]
+                    window.location.href = 'dashboard.html';
+                } else {
+                    document.getElementById('message').innerText = "Identifiants incorrects.";
+                }
+            } catch (error) {
+                document.getElementById('message').innerText = "Serveur indisponible.";
+            }
+        });
+    </script>
+</body>
+</html>

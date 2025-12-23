@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - SentimentAI</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="auth-page">
+    <div class="auth-card">
+        <div class="logo">Sentiment<span>AI</span></div>
+        <h2>Créer un compte</h2>
+        <p class="auth-subtitle">Rejoignez-nous pour analyser vos avis clients.</p>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="name">Nom complet</label>
+                <input type="text" id="name" placeholder="Ex: Jean Dupont" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="nom@entreprise.com" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+            <div class="form-group">
+                <label for="password_confirmation">Confirmer le mot de passe</label>
+                <input type="password" id="password_confirmation" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-primary">S'inscrire</button>
+        </form>
+
+        <p class="auth-redirect">Déjà un compte ? <a href="login.html">Connectez-vous ici</a></p>
+        <div id="message" class="error-msg"></div>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const password_confirmation = document.getElementById('password_confirmation').value;
+
+            try {
+                const response = await fetch('http://localhost:8000/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ name, email, password, password_confirmation })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert("Compte créé ! Connectez-vous maintenant.");
+                    window.location.href = 'login.html';
+                } else {
+                    document.getElementById('message').innerText = data.message || "Erreur lors de l'inscription.";
+                }
+            } catch (error) {
+                document.getElementById('message').innerText = "Serveur indisponible.";
+            }
+        });
+    </script>
+</body>
+</html>

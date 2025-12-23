@@ -102,3 +102,79 @@ body {
     transform: translateY(-5px);
     box-shadow: 0 10px 15px rgba(0,0,0,0.1);
 }
+
+/* Styles pour les pages d'authentification */
+.auth-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+.auth-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.auth-card h2 {
+    margin-top: 1.5rem;
+    font-size: 1.5rem;
+    color: var(--dark);
+}
+
+.auth-subtitle {
+    color: var(--text-gray);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-family: inherit;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.auth-redirect {
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--text-gray);
+}
+
+.auth-redirect a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.error-msg {
+    color: #ef4444;
+    font-size: 0.85rem;
+    margin-top: 1rem;
+}

@@ -12,13 +12,13 @@
         <div class="logo">Sentiment<span>AI</span></div>
         <nav>
             <a href="#" class="active">Tableau de bord</a>
-            <a href="login.html" onclick="logout()">Déconnexion</a>
+            <a href="#" onclick="logout()">Déconnexion</a>
         </nav>
     </div>
 
     <main class="content">
         <header class="content-header">
-            <h1>Bienvenue, <span id="userName">Utilisateur</span></h1>
+            <h1>Bienvenue, <span id="userNameDisplay">Utilisateur</span></h1>
             <button class="btn-primary" onclick="openModal()">+ Ajouter un avis</button>
         </header>
 
@@ -39,8 +39,7 @@
 
         <section class="reviews-section">
             <h2>Avis récents</h2>
-            <div id="reviewsList" class="reviews-container">
-                </div>
+            <div id="reviewsList" class="reviews-container"></div>
         </section>
     </main>
 

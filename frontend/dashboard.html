@@ -2,46 +2,59 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard - Avis Clients</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SentimentAI</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <nav>
-        <h2>Plateforme d'Analyse</h2>
-        <button onclick="logout()">Déconnexion</button>
-    </nav>
-
-    <div class="dashboard-container">
-        <section id="stats">
-            <h3>Statistiques Globales</h3>
-            <div id="statsContent">Chargement...</div> [cite: 77]
-        </section>
-
-        <section id="reviews">
-            <h3>Liste des Avis</h3>
-            <div id="reviewsList"></div> 
-        </section>
+<body class="dashboard-body">
+    <div class="sidebar">
+        <div class="logo">Sentiment<span>AI</span></div>
+        <nav>
+            <a href="#" class="active">Tableau de bord</a>
+            <a href="login.html" onclick="logout()">Déconnexion</a>
+        </nav>
     </div>
 
-    <script>
-        // Vérifier si l'utilisateur est connecté
-        const token = localStorage.getItem('auth_token');
-        if (!token) window.location.href = 'index.html';
+    <main class="content">
+        <header class="content-header">
+            <h1>Bienvenue, <span id="userName">Utilisateur</span></h1>
+            <button class="btn-primary" onclick="openModal()">+ Ajouter un avis</button>
+        </header>
 
-        async function fetchReviews() {
-            const response = await fetch('http://localhost:8000/api/reviews', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const reviews = await response.json();
-            // Logique pour afficher les avis ici 
-        }
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Note Moyenne</h3>
+                <p id="avgScore">--</p>
+            </div>
+            <div class="stat-card">
+                <h3>Avis Positifs</h3>
+                <p id="posPercent" class="text-success">--%</p>
+            </div>
+            <div class="stat-card">
+                <h3>Thème Dominant</h3>
+                <p id="topTopic">--</p>
+            </div>
+        </div>
 
-        function logout() {
-            localStorage.removeItem('auth_token');
-            window.location.href = 'index.html';
-        }
+        <section class="reviews-section">
+            <h2>Avis récents</h2>
+            <div id="reviewsList" class="reviews-container">
+                </div>
+        </section>
+    </main>
 
-        fetchReviews();
-    </script>
+    <div id="reviewModal" class="modal">
+        <div class="modal-content">
+            <h3>Nouvel Avis Client</h3>
+            <textarea id="reviewText" placeholder="Collez ici l'avis du client..."></textarea>
+            <div class="modal-actions">
+                <button onclick="closeModal()" class="btn-secondary">Annuler</button>
+                <button onclick="submitReview()" class="btn-primary">Analyser l'IA</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
 </body>
 </html>

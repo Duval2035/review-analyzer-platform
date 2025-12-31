@@ -42,7 +42,10 @@ body {
     margin-left: 1.5rem;
     font-weight: 600;
 }
-
+.btn-secondary {
+    border: 2px solid var(--dark);
+    border-radius: 8px;
+}
 /* Hero Section */
 .hero {
     display: flex;
@@ -247,6 +250,7 @@ body {
     font-size: 0.75rem;
     font-weight: 600;
 }
+
 
 .modal {
     display: none;

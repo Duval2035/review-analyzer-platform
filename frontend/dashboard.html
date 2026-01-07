@@ -76,13 +76,13 @@
                 <span class="close-btn" onclick="closeModal()">&times;</span>
             </div>
             
-            <form onsubmit="submitReview(event)">
+            <div id="reviewFormContainer">
                 <textarea id="reviewText" placeholder="Collez l'avis du client ici... (Ex: La livraison était parfaite !)" required></textarea>
                 <div class="modal-actions">
                     <button type="button" onclick="closeModal()" class="btn-secondary">Annuler</button>
-                    <button type="submit" class="btn-primary">Lancer l'Analyse IA</button>
+                    <button id="btnSubmitReview" type="button" onclick="submitReview()" class="btn-primary">Lancer l'Analyse IA</button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 

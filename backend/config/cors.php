@@ -3,7 +3,7 @@
 return [
     'paths' => ['api/*', 'sanctum/csrf-cookie', '*'],
     'allowed_methods' => ['*'],
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['*'], // Autorise tout le monde (Frontend)
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],

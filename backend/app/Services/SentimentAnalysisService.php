@@ -28,17 +28,17 @@ class SentimentAnalysisService
             - 'topics' : un tableau de 1 à 3 mots-clés max (ex: ['Livraison', 'Prix']).
         ";
 
-        try {
-            // 2. Envoi de la requête à Google Gemini
-            $response = Http::post($this->baseUrl . '?key=' . $this->apiKey, [
-                'contents' => [
-                    [
-                        'parts' => [
-                            ['text' => $prompt]
-                        ]
-                    ]
+       try {
+            // 2. Appel à l'API Gemini
+    $response = Http::withoutVerifying()->post($this->baseUrl . '?key=' . $this->apiKey, [
+        'contents' => [
+            [
+                'parts' => [
+                    ['text' => $prompt]
                 ]
-            ]);
+            ]
+        ]
+    ]);
 
             // 3. Vérification si Google a répondu
             if ($response->failed()) {

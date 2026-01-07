@@ -14,7 +14,10 @@
             <a href="#" class="active">
                 <span class="icon">📊</span> Tableau de bord
             </a>
-            <a href="#" onclick="logout()">
+            <a href="#" onclick="toggleDarkMode()">
+                <span class="icon">🌙</span> Mode Sombre
+            </a>
+            <a href="#" onclick="logout()" class="logout-link">
                 <span class="icon">🚪</span> Déconnexion
             </a>
         </nav>
@@ -61,7 +64,8 @@
                 <span class="badge" id="totalReviewsCount">0 avis</span>
             </div>
             <div id="reviewsList" class="reviews-container">
-                </div>
+                <p style="text-align:center; color:#94a3b8;">Chargement des données...</p>
+            </div>
         </section>
     </main>
 
@@ -71,6 +75,7 @@
                 <h3>Nouvel Avis Client</h3>
                 <span class="close-btn" onclick="closeModal()">&times;</span>
             </div>
+            
             <form onsubmit="submitReview(event)">
                 <textarea id="reviewText" placeholder="Collez l'avis du client ici... (Ex: La livraison était parfaite !)" required></textarea>
                 <div class="modal-actions">

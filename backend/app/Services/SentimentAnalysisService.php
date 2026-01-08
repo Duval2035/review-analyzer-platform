@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 class SentimentAnalysisService
 {
     protected $apiKey;
+    // URL officielle pour le modèle Flash (le plus fiable actuellement)
     protected $baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
     public function __construct()
@@ -17,70 +18,52 @@ class SentimentAnalysisService
 
     public function analyze($text)
     {
-        // 1. On prépare le "Prompt" (la consigne pour l'IA)
         $prompt = "
             Analyse l'avis client suivant : \"$text\".
-            
-            Tu dois répondre UNIQUEMENT avec un objet JSON (sans markdown, sans ```json).
-            Le JSON doit contenir exactement ces clés :
-            - 'sentiment' : 'positive', 'negative', ou 'neutral'.
-            - 'score' : un nombre entier de 0 à 100 (0 = haine, 100 = amour).
-            - 'topics' : un tableau de 1 à 3 mots-clés max (ex: ['Livraison', 'Prix']).
+            Réponds UNIQUEMENT avec un JSON valide :
+            - 'sentiment' : 'positive', 'negative', 'neutral'
+            - 'score' : entier 0-100
+            - 'topics' : tableau de mots-clés (ex: ['Prix', 'Qualité'])
         ";
 
-       try {
-            // 2. Appel à l'API Gemini
-    $response = Http::withoutVerifying()->post($this->baseUrl . '?key=' . $this->apiKey, [
-        'contents' => [
-            [
-                'parts' => [
-                    ['text' => $prompt]
-                ]
-            ]
-        ]
-    ]);
+        try {
+            // withoutVerifying() est nécessaire pour WAMP/Laragon/Windows
+            $response = Http::withoutVerifying()->post($this->baseUrl . '?key=' . $this->apiKey, [
+                'contents' => [['parts' => [['text' => $prompt]]]]
+            ]);
 
-            // 3. Vérification si Google a répondu
             if ($response->failed()) {
-                Log::error('Erreur Gemini API: ' . $response->body());
-                return $this->fallbackResponse(); // Retourne une réponse par défaut si erreur
+                // On log l'erreur pour la voir
+                Log::error('Erreur Gemini: ' . $response->body());
+                return $this->fallback('Err Google ' . $response->status());
             }
 
             $data = $response->json();
-
-            // 4. Extraction du texte de la réponse
+            
+            // Sécurité si la réponse est vide
             if (!isset($data['candidates'][0]['content']['parts'][0]['text'])) {
-                return $this->fallbackResponse();
+                return $this->fallback('Réponse vide');
             }
 
             $rawText = $data['candidates'][0]['content']['parts'][0]['text'];
+            $cleanJson = str_replace(['```json', '```'], '', $rawText);
+            
+            $result = json_decode($cleanJson, true);
 
-            // 5. Nettoyage du JSON (au cas où l'IA ajoute des ```json ...)
-            $cleanedJson = str_replace(['```json', '```'], '', $rawText);
-            $result = json_decode($cleanedJson, true);
-
-            // Si le décodage échoue, on retourne le fallback
-            if (!$result) {
-                return $this->fallbackResponse();
-            }
-
-            return $result;
+            return $result ?: $this->fallback('JSON Invalide');
 
         } catch (\Exception $e) {
-            Log::error('Exception Gemini: ' . $e->getMessage());
-            return $this->fallbackResponse();
+            Log::error($e->getMessage());
+            return $this->fallback('Err Connexion');
         }
     }
 
-    /**
-     * Réponse de secours si l'IA est en panne ou injoignable
-     */
-    private function fallbackResponse()
+    private function fallback($reason)
     {
         return [
             'sentiment' => 'neutral',
             'score' => 50,
-            'topics' => ['Non analysé']
+            'topics' => [$reason] // L'erreur s'affichera sur le dashboard
         ];
     }
 }

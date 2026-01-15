@@ -2,68 +2,49 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-
 class SentimentAnalysisService
 {
-    protected $apiKey;
-    // URL officielle pour le modèle Flash (le plus fiable actuellement)
-    protected $baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
-
-    public function __construct()
-    {
-        $this->apiKey = env('GEMINI_API_KEY');
-    }
-
+    // Plus besoin de clé API pour cette version de secours
+    
     public function analyze($text)
     {
-        $prompt = "
-            Analyse l'avis client suivant : \"$text\".
-            Réponds UNIQUEMENT avec un JSON valide :
-            - 'sentiment' : 'positive', 'negative', 'neutral'
-            - 'score' : entier 0-100
-            - 'topics' : tableau de mots-clés (ex: ['Prix', 'Qualité'])
-        ";
+        // 1. On convertit le texte en minuscules pour chercher des mots
+        $lowerText = strtolower($text);
 
-        try {
-            // withoutVerifying() est nécessaire pour WAMP/Laragon/Windows
-            $response = Http::withoutVerifying()->post($this->baseUrl . '?key=' . $this->apiKey, [
-                'contents' => [['parts' => [['text' => $prompt]]]]
-            ]);
-
-            if ($response->failed()) {
-                // On log l'erreur pour la voir
-                Log::error('Erreur Gemini: ' . $response->body());
-                return $this->fallback('Err Google ' . $response->status());
-            }
-
-            $data = $response->json();
+        // 2. Détection basique (Simulation d'IA)
+        // Mots positifs
+        if (str_contains($lowerText, 'génial') || 
+            str_contains($lowerText, 'top') || 
+            str_contains($lowerText, 'bravo') || 
+            str_contains($lowerText, 'rapide') || 
+            str_contains($lowerText, 'aime') || 
+            str_contains($lowerText, 'excellent')) {
             
-            // Sécurité si la réponse est vide
-            if (!isset($data['candidates'][0]['content']['parts'][0]['text'])) {
-                return $this->fallback('Réponse vide');
-            }
-
-            $rawText = $data['candidates'][0]['content']['parts'][0]['text'];
-            $cleanJson = str_replace(['```json', '```'], '', $rawText);
-            
-            $result = json_decode($cleanJson, true);
-
-            return $result ?: $this->fallback('JSON Invalide');
-
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return $this->fallback('Err Connexion');
+            return [
+                'sentiment' => 'positive',
+                'score' => rand(80, 100), // Score aléatoire entre 80 et 100
+                'topics' => ['Qualité', 'Service']
+            ];
         }
-    }
 
-    private function fallback($reason)
-    {
+        // Mots négatifs
+        if (str_contains($lowerText, 'retard') || 
+            str_contains($lowerText, 'nul') || 
+            str_contains($lowerText, 'mauvais') || 
+            str_contains($lowerText, 'pas reçu')) {
+            
+            return [
+                'sentiment' => 'negative',
+                'score' => rand(10, 40),
+                'topics' => ['Problème', 'Livraison']
+            ];
+        }
+
+        // Par défaut (Neutre)
         return [
             'sentiment' => 'neutral',
             'score' => 50,
-            'topics' => [$reason] // L'erreur s'affichera sur le dashboard
+            'topics' => ['Général']
         ];
     }
 }

@@ -9,7 +9,7 @@ use App\Services\SentimentAnalysisService;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-
+// Routes protégées
 Route::middleware('auth:sanctum')->group(function () {
     
     // Authentification & Profil
@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // 4. Analyse IA manuelle (Endpoint séparé obligatoire)
     // Permet d'analyser un texte sans forcément l'enregistrer en base de données
+    Route::post('/analyze', [ReviewController::class, 'analyze']);
     Route::post('/analyze', function (Request $request, SentimentAnalysisService $ia) {
         $request->validate(['text' => 'required|string']);
         return response()->json($ia->analyze($request->text));

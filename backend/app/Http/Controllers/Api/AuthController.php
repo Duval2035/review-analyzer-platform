@@ -10,19 +10,19 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    /**
-     * Inscription d'un nouvel utilisateur (POST /api/register)
-     */
+    
+     // Inscription d'un nouvel utilisateur (POST /api/register)
+    
     public function register(Request $request)
     {
-        // 1. Validation des données
+        //  Validation des données
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        // 2. Création de l'utilisateur
+        // Création de l'utilisateur
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -31,10 +31,10 @@ class AuthController extends Controller
             'role' => 'user',
         ]);
 
-        // 3. Création du token
+        //  Création du token
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        // 4. Retour de la réponse
+        //  Retour de la réponse
         return response()->json([
             'message' => 'User registered successfully',
             'user' => $user,
@@ -42,18 +42,17 @@ class AuthController extends Controller
         ], 201);
     }
 
-    /**
-     * Connexion de l'utilisateur (POST /api/login)
-     */
+    // Connexion de l'utilisateur (POST /api/login)
+    
     public function login(Request $request)
     {
-        // 1. Validation des données
+        //Validation des données
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
 
-        // 2. Vérification des identifiants (email et mot de passe)
+        //  Vérification des identifiants (email et mot de passe)
         $user = User::where('email', $request->email)->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
@@ -63,13 +62,13 @@ class AuthController extends Controller
             ]);
         }
 
-        // 3. Suppression des anciens tokens (optionnel, pour garder un seul token actif)
+        //  Suppression des anciens tokens 
         $user->tokens()->delete();
 
-        // 4. Création d'un nouveau token
+        // Création d'un nouveau token
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        // 5. Retour de la réponse
+        // Retour de la réponse
         return response()->json([
             'message' => 'Login successful',
             'user' => $user,
@@ -77,9 +76,8 @@ class AuthController extends Controller
         ]);
     }
 
-    /**
-     * Déconnexion de l'utilisateur (POST /api/logout)
-     */
+    // Déconnexion de l'utilisateur (POST /api/logout)
+     
     public function logout(Request $request)
     {
         // Supprime le token actuel utilisé pour l'authentification de cette requête

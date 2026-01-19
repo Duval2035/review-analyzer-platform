@@ -4,14 +4,13 @@ namespace App\Services;
 
 class SentimentAnalysisService
 {
-    // Plus besoin de clé API pour cette version de secours
     
     public function analyze($text)
     {
-        // 1. On convertit le texte en minuscules pour chercher des mots
+        // On convertit le texte en minuscules pour chercher des mots
         $lowerText = strtolower($text);
 
-        // 2. Détection basique (Simulation d'IA)
+        // Détection basique (Simulation d'IA)
         // Mots positifs
         if (str_contains($lowerText, 'génial') || 
             str_contains($lowerText, 'top') || 

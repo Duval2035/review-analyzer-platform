@@ -16,14 +16,13 @@ class ReviewController extends Controller
         $this->aiService = $aiService;
     }
 
-    // PRIORITÉ 1 : Endpoint IA isolé (Demandé par le PDF)
     public function analyze(Request $request)
     {
         $request->validate(['text' => 'required|string|min:5']);
         return response()->json($this->aiService->analyze($request->text));
     }
 
-    // PRIORITÉ 2 : Stats calculées par le Backend (Demandé par le PDF)
+    //Stats calculées par le Backend 
     public function stats()
     {
         $reviews = Review::all();
@@ -72,8 +71,9 @@ class ReviewController extends Controller
     public function destroy(Request $request, $id)
     {
         $review = Review::findOrFail($id);
-        // Autorise l'admin OU le propriétaire
-        if ($request->user()->role !== 'admin' && $request->user()->id !== $review->user_id) {
+        
+        // Autorise l'admin 
+        if ($request->user()->role !== 'admin') {
             return response()->json(['message' => 'Non autorisé'], 403);
         }
         $review->delete();

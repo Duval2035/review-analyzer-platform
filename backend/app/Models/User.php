@@ -11,14 +11,13 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * Les attributs qui peuvent être remplis massivement.
-     */
+    //  Les attributs qui peuvent être remplis massivement.
+
     protected $fillable = [
         'name',
         'email',
         'password',
-        'role', // Ajouté pour gérer admin/user
+        'role',
     ];
 
     protected $hidden = [
@@ -31,9 +30,8 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    /**
-     * Un utilisateur peut avoir plusieurs avis.
-     */
+    //  Un utilisateur peut avoir plusieurs avis.
+    
     public function reviews()
     {
         return $this->hasMany(Review::class);

@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - SentimentAI</title>
+    <title>Connexion - SmartFeedbackAI</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="auth-page">
     <div class="auth-card">                                                                                                             
-        <div class="logo">Sentiment<span>AI</span></div>
+        <div class="logo">SmartFeedback<span>AI</span></div>
         <h2>Bon retour !</h2>
         <p class="auth-subtitle">Connectez-vous pour accéder à vos analyses.</p>
 
@@ -45,7 +45,7 @@
                 const data = await response.json();
                 if (response.ok) {
                     localStorage.setItem('auth_token', data.token);
-                    localStorage.setItem('user_role', data.user.role); // Stocker le rôle [cite: 52]
+                    localStorage.setItem('user_role', data.user.role); 
                     window.location.href = 'dashboard.html';
                 } else {
                     document.getElementById('message').innerText = "Identifiants incorrects.";
